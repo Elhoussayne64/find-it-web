@@ -3,38 +3,649 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Find It — 3D Hidden Object Game | ElAr Games</title>
+  <title>Find It — Cozy 3D Hidden Object Game | ElAr Games</title>
+  <meta name="description" content="Explore 8 cozy handcrafted 3D rooms, open drawers and doors, and spot cleverly hidden objects across 50 levels in Find It for Android." />
+  <meta property="og:title" content="Find It — Cozy 3D Hidden Object Game" />
+  <meta property="og:description" content="Explore 8 handcrafted 3D rooms, open interactive drawers & doors, and discover hidden treasures across 50 levels." />
+  <meta property="og:image" content="images/feature_graphic.png" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" type="image/png" href="images/app_icon.png" />
   <style>
-    :root { --bg:#fdf2e2; --card:#ffffff; --ink:#3b2a2a; --soft:#7a6458; --accent:#f28b30; --ok:#2fa37a; }
-    * { box-sizing:border-box; margin:0; padding:0; }
-    body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--ink); line-height:1.6; padding:32px 16px; }
-    .wrap { max-width:680px; margin:0 auto; background:var(--card); border-radius:24px; padding:36px 28px; box-shadow:0 12px 32px rgba(59,42,42,0.08); text-align:center; }
-    h1 { font-size:2.2rem; margin-bottom:8px; color:var(--ink); }
-    .tag { color:var(--soft); font-size:1.05rem; margin-bottom:24px; }
-    .pill { display:inline-block; background:#f7e2c4; color:var(--ink); padding:6px 14px; border-radius:999px; font-weight:600; font-size:0.9rem; margin:4px; }
-    .links { margin-top:28px; display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
-    a.btn { text-decoration:none; padding:12px 22px; border-radius:14px; font-weight:700; transition:transform .15s; }
-    a.btn:hover { transform:translateY(-1px); }
-    a.primary { background:var(--accent); color:#fff; }
-    a.secondary { background:#f3eadc; color:var(--ink); }
-    footer { margin-top:28px; font-size:0.88rem; color:var(--soft); }
+    :root {
+      --bg: #16110e;
+      --bg-soft: #211914;
+      --card: #281f19;
+      --card-border: rgba(255, 214, 153, 0.14);
+      --accent: #f59e0b;
+      --accent-2: #fb7185;
+      --accent-glow: rgba(245, 158, 11, 0.28);
+      --text: #fff8f0;
+      --muted: #c8b6a6;
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background:
+        radial-gradient(900px 500px at 15% -5%, rgba(245, 158, 11, 0.16), transparent 65%),
+        radial-gradient(800px 500px at 90% 10%, rgba(251, 146, 60, 0.12), transparent 65%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 22px; }
+
+    /* Navbar */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background: rgba(22, 17, 14, 0.78);
+      border-bottom: 1px solid var(--card-border);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: -0.3px;
+    }
+    .brand img {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .nav-links a:hover { color: var(--text); }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 22px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 15px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 55%, #ea580c 100%);
+      color: #1c1208;
+      box-shadow: 0 10px 28px var(--accent-glow);
+    }
+    .btn-primary:hover { box-shadow: 0 14px 34px rgba(245, 158, 11, 0.42); }
+    .btn-secondary {
+      background: rgba(255, 248, 240, 0.08);
+      color: var(--text);
+      border: 1px solid var(--card-border);
+    }
+    .btn-secondary:hover { background: rgba(255, 248, 240, 0.14); }
+    .btn-sm { padding: 9px 16px; font-size: 13px; border-radius: 11px; }
+
+    /* Hero */
+    .hero { padding: 64px 0 48px; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1.15fr;
+      gap: 42px;
+      align-items: center;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #fcd34d;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: clamp(34px, 5vw, 54px);
+      line-height: 1.08;
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 18px;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, #fde68a, #f59e0b 60%, #fb923c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p.lead {
+      font-size: 17px;
+      color: var(--muted);
+      margin-bottom: 28px;
+      max-width: 520px;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 30px;
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .hero-meta span { display: inline-flex; align-items: center; gap: 6px; }
+    .hero-visual {
+      position: relative;
+    }
+    .hero-card {
+      position: relative;
+      border-radius: 26px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 214, 153, 0.24);
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55), 0 0 80px rgba(245, 158, 11, 0.16);
+      background: var(--card);
+    }
+    .hero-card img.banner {
+      width: 100%;
+      aspect-ratio: 1024 / 500;
+      object-fit: cover;
+    }
+    .hero-badge {
+      position: absolute;
+      bottom: -18px;
+      left: 22px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(28, 21, 16, 0.94);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 214, 153, 0.25);
+      padding: 10px 16px 10px 10px;
+      border-radius: 18px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+    }
+    .hero-badge img {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+    }
+    .hero-badge strong { display: block; font-size: 15px; line-height: 1.2; }
+    .hero-badge small { color: #fcd34d; font-size: 12px; font-weight: 600; }
+
+    /* Stats Strip */
+    .stats {
+      margin: 44px 0 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 20px 18px;
+      text-align: center;
+    }
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      font-weight: 900;
+      color: #fbbf24;
+      line-height: 1.15;
+    }
+    .stat span { font-size: 13px; color: var(--muted); font-weight: 600; }
+
+    /* Sections */
+    section.block { padding: 68px 0 12px; }
+    .sec-head {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 38px;
+    }
+    .sec-head .eyebrow {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: #fbbf24;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .sec-head h2 {
+      font-size: clamp(26px, 3.6vw, 38px);
+      font-weight: 900;
+      letter-spacing: -0.6px;
+      margin-bottom: 10px;
+    }
+    .sec-head p { color: var(--muted); font-size: 16px; }
+
+    /* Showcase Gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    .shot {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform 0.22s ease, border-color 0.22s ease;
+      cursor: pointer;
+    }
+    .shot:hover {
+      transform: translateY(-5px);
+      border-color: rgba(251, 191, 36, 0.45);
+    }
+    .shot-img {
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: #1a130f;
+    }
+    .shot-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+    .shot:hover .shot-img img { transform: scale(1.05); }
+    .shot-body { padding: 18px 20px 20px; }
+    .shot-body h3 { font-size: 17px; margin-bottom: 6px; }
+    .shot-body p { font-size: 14px; color: var(--muted); }
+
+    /* 8 Rooms Grid */
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .room-card {
+      background: linear-gradient(180deg, rgba(48, 36, 28, 0.9), rgba(33, 25, 20, 0.95));
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 20px 18px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .room-card:hover { transform: translateY(-3px); border-color: rgba(251, 191, 36, 0.4); }
+    .room-icon { font-size: 28px; margin-bottom: 10px; display: block; }
+    .room-card h3 { font-size: 16px; margin-bottom: 4px; }
+    .room-card p { font-size: 13px; color: var(--muted); }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .feat {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .feat-ico {
+      width: 46px;
+      height: 46px;
+      border-radius: 13px;
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 14px;
+    }
+    .feat h3 { font-size: 17px; margin-bottom: 8px; }
+    .feat p { font-size: 14px; color: var(--muted); }
+
+    /* Bottom CTA */
+    .cta-box {
+      margin: 76px 0 40px;
+      background:
+        radial-gradient(circle at 85% 20%, rgba(251, 191, 36, 0.22), transparent 55%),
+        linear-gradient(135deg, #2d2118, #1d1510);
+      border: 1px solid rgba(251, 191, 36, 0.32);
+      border-radius: 28px;
+      padding: 46px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .cta-copy { max-width: 580px; }
+    .cta-copy h2 { font-size: clamp(24px, 3.2vw, 34px); margin-bottom: 10px; }
+    .cta-copy p { color: var(--muted); font-size: 16px; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 32px 0 46px;
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 20px; }
+    .footer-links a:hover { color: #fbbf24; }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(10, 7, 5, 0.88);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      cursor: zoom-out;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: min(1040px, 95vw);
+      max-height: 88vh;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 214, 153, 0.25);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+    }
+
+    @media (max-width: 960px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+      .gallery { grid-template-columns: 1fr; }
+      .rooms-grid { grid-template-columns: repeat(2, 1fr); }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .features-grid { grid-template-columns: 1fr; }
+      .cta-box { padding: 32px 22px; }
+      .hero { padding-top: 38px; }
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>Find It</h1>
-    <p class="tag">3D Hidden Object House Exploration Game by ElAr Games</p>
-    <div>
-      <span class="pill">8 Connected 3D Rooms</span>
-      <span class="pill">50 Handcrafted Levels</span>
-      <span class="pill">9 Game Modes</span>
-      <span class="pill">EN · AR · FR</span>
+
+  <!-- Navbar -->
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a href="#" class="brand">
+        <img src="images/app_icon.png" alt="Find It App Icon" />
+        <span>Find It</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#gallery">Gallery</a>
+        <a href="#worlds">8 Worlds</a>
+        <a href="#features">Features</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+      </nav>
+      <a class="btn btn-primary btn-sm play-store-link" href="#" target="_blank" rel="noopener">
+        ▶ Google Play
+      </a>
     </div>
-    <div class="links">
-      <a class="btn primary" href="./privacy-policy.html">Privacy Policy</a>
-      <a class="btn secondary" href="mailto:support@elarmobo.com">Contact Support</a>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <span class="pill">✨ Cozy 3D Hidden-Object Adventure</span>
+          <h1>Explore 3D Rooms. <span>Spot Every Secret.</span></h1>
+          <p class="lead">
+            Step inside a warm, interactive 3D house filled with handcrafted rooms, working drawers, and cleverly tucked-away objects. Relax, zoom in, and sharpen your detective eye across 50 levels.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary play-store-link" href="#" target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.99 1.99 0 0 1-.61-1.436V3.25c0-.553.226-1.055.609-1.436zm11.244 11.244l2.707 2.707-11.2 6.373 8.493-9.08zm3.79-3.79l2.493 1.419c.85.484.85 1.742 0 2.226l-2.493 1.419-2.852-2.532 2.852-2.532zM6.36 1.862l11.2 6.373-2.707 2.707-8.493-9.08z"/></svg>
+              Download on Google Play
+            </a>
+            <a class="btn btn-secondary" href="#gallery">See Screenshots</a>
+          </div>
+          <div class="hero-meta">
+            <span>📱 Android</span>
+            <span>🌍 English · العربية · Français</span>
+            <span>⭐ Free to Play</span>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-card">
+            <img class="banner" src="images/feature_graphic.png" alt="Find It 3D Hidden Object Banner" />
+          </div>
+          <div class="hero-badge">
+            <img src="images/app_icon.png" alt="Find It Icon" />
+            <div>
+              <strong>Find It: 3D Hidden Object</strong>
+              <small>By ElAr Games · 50 Handcrafted Levels</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats">
+        <div class="stat">
+          <strong>8</strong>
+          <span>3D Rooms & Worlds</span>
+        </div>
+        <div class="stat">
+          <strong>50</strong>
+          <span>Progressive Levels</span>
+        </div>
+        <div class="stat">
+          <strong>100+</strong>
+          <span>3D Hidden Objects</span>
+        </div>
+        <div class="stat">
+          <strong>3</strong>
+          <span>Supported Languages</span>
+        </div>
+      </div>
     </div>
-    <footer>© 2026 ElAr Games · <code>com.elargames.findit</code></footer>
+  </section>
+
+  <!-- Gallery -->
+  <section id="gallery" class="block">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Visual Showcase</span>
+        <h2>A Living, Sunlit 3D World</h2>
+        <p>Every room is built in crisp 3D — rotate the view, zoom into corners, and open furniture to uncover hidden treasures. Tap any image to inspect closely.</p>
+      </div>
+      <div class="gallery">
+        <article class="shot" data-lightbox="images/showcase_bedroom.jpg">
+          <div class="shot-img">
+            <img src="images/showcase_bedroom.jpg" alt="Cozy 3D Bedroom Hidden Object Scene" loading="lazy" />
+          </div>
+          <div class="shot-body">
+            <h3>Cozy Sunlit Interiors</h3>
+            <p>Search shelves, rugs, nightstands, and pillows bathed in warm natural lighting.</p>
+          </div>
+        </article>
+
+        <article class="shot" data-lightbox="images/showcase_kitchen.jpg">
+          <div class="shot-img">
+            <img src="images/showcase_kitchen.jpg" alt="Interactive 3D Kitchen with Open Drawers" loading="lazy" />
+          </div>
+          <div class="shot-body">
+            <h3>Open Drawers & Cabinets</h3>
+            <p>Objects aren't just painted flat — tap drawers, doors, and boxes to peek inside!</p>
+          </div>
+        </article>
+
+        <article class="shot" data-lightbox="images/showcase_house.jpg">
+          <div class="shot-img">
+            <img src="images/showcase_house.jpg" alt="Full 3D Two-Story House Exploration" loading="lazy" />
+          </div>
+          <div class="shot-body">
+            <h3>Explore the Entire House</h3>
+            <p>Move room-to-room through connected doors or roam freely in Explore House mode.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 Worlds -->
+  <section id="worlds" class="block">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Room-by-Room Journey</span>
+        <h2>8 Unique Rooms to Unlock</h2>
+        <p>Earn stars to unlock new spaces across the house — each with its own atmosphere, furniture, and hiding spots.</p>
+      </div>
+      <div class="rooms-grid">
+        <div class="room-card"><span class="room-icon">🛏️</span><h3>1. Bedroom</h3><p>Cozy morning light, bookshelves, and secret nightstands.</p></div>
+        <div class="room-card"><span class="room-icon">🛁</span><h3>2. Bathroom</h3><p>Tiled vanities, mirrors, cabinets, and toiletries.</p></div>
+        <div class="room-card"><span class="room-icon">🍳</span><h3>3. Kitchen</h3><p>Counters, utensils, pantry shelves, and drawers.</p></div>
+        <div class="room-card"><span class="room-icon">🛋️</span><h3>4. Living Room</h3><p>Plush sofas, coffee tables, frames, and decor.</p></div>
+        <div class="room-card"><span class="room-icon">💼</span><h3>5. Home Office</h3><p>Desks, laptops, folders, and detective curios.</p></div>
+        <div class="room-card"><span class="room-icon">🔧</span><h3>6. Garage</h3><p>Workbenches, toolboxes, shelves, and gear.</p></div>
+        <div class="room-card"><span class="room-icon">🧸</span><h3>7. Kids' Room</h3><p>Colorful toys, storybooks, and playful nooks.</p></div>
+        <div class="room-card"><span class="room-icon">🕯️</span><h3>8. Attic</h3><p>Vintage trunks, keepsakes, and the grand finale.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="block">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Why Players Love Find It</span>
+        <h2>Designed for Pure, Relaxing Flow</h2>
+        <p>Smooth touch controls, gentle soundscapes, and zero mid-search interruptions.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feat">
+          <div class="feat-ico">🔍</div>
+          <h3>Smooth 3D Pan & Zoom</h3>
+          <p>Pinch to zoom into tiny details, rotate around furniture, and spot objects from any angle.</p>
+        </div>
+        <div class="feat">
+          <div class="feat-ico">🚪</div>
+          <h3>Interactive Doors & Drawers</h3>
+          <p>Tap doors to walk between connected rooms and slide open drawers to check what's tucked inside.</p>
+        </div>
+        <div class="feat">
+          <div class="feat-ico">🗺️</div>
+          <h3>Full-House Overview Map</h3>
+          <p>Jump effortlessly between unlocked rooms and track your progress across all 8 worlds.</p>
+        </div>
+        <div class="feat">
+          <div class="feat-ico">💡</div>
+          <h3>Smart Hints & Radar</h3>
+          <p>Stuck on the last item? Use helpful hints or a brief radar pulse without spoiling the fun.</p>
+        </div>
+        <div class="feat">
+          <div class="feat-ico">🎯</div>
+          <h3>Multiple Game Modes</h3>
+          <p>Play Classic, Relax (no timer), Time Attack, Night Mode, Detective, or Daily Challenges.</p>
+        </div>
+        <div class="feat">
+          <div class="feat-ico">🌍</div>
+          <h3>Play in Your Language</h3>
+          <p>Full native localization in English, Arabic (العربية), and French (Français).</p>
+        </div>
+      </div>
+
+      <!-- Bottom CTA -->
+      <div class="cta-box">
+        <div class="cta-copy">
+          <h2>Ready to Test Your Detective Eye?</h2>
+          <p>Download Find It for free on Android and start exploring all 8 handcrafted 3D rooms today.</p>
+        </div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a class="btn btn-primary play-store-link" href="#" target="_blank" rel="noopener">
+            ▶ Get Find It on Google Play
+          </a>
+          <a class="btn btn-secondary" href="privacy-policy.html">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="wrap footer-inner">
+      <div>&copy; 2026 <strong>ElAr Games</strong>. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="https://elarmobo.com/">ElAr Games Studio</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="mailto:support@elarmobo.com">support@elarmobo.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <img id="lightbox-img" src="" alt="Expanded Screenshot" />
   </div>
+
+  <script>
+    // =========================================================================
+    // EASY URL CONFIG — Update PLAY_STORE_URL anytime after your Play Store link changes
+    // =========================================================================
+    const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.elargames.findit";
+
+    document.querySelectorAll(".play-store-link").forEach((el) => {
+      el.href = PLAY_STORE_URL;
+    });
+
+    // Click-to-zoom gallery lightbox
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightbox-img");
+    document.querySelectorAll("[data-lightbox]").forEach((card) => {
+      card.addEventListener("click", () => {
+        lightboxImg.src = card.getAttribute("data-lightbox");
+        lightbox.classList.add("open");
+        lightbox.setAttribute("aria-hidden", "false");
+      });
+    });
+    lightbox.addEventListener("click", () => {
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") lightbox.classList.remove("open");
+    });
+  </script>
 </body>
 </html>
